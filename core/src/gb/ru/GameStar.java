@@ -8,18 +8,25 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameStar extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	Texture background;
+	int x;
+	int y;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("nemo.png");
+		background = new Texture("fon.jpg");
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(background,0,0,800,480);
+		batch.draw(img, x, y);
+		x++;
+		y++;
 		batch.end();
 	}
 	
