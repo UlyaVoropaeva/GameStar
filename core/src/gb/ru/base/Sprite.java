@@ -3,6 +3,7 @@ package gb.ru.base;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
 import gb.ru.math.Rect;
 
 public class Sprite extends Rect {
@@ -13,11 +14,16 @@ public class Sprite extends Rect {
     protected int frame;
 
     public Sprite(TextureRegion region) {
+
         if (region == null) {
             throw new IllegalArgumentException("region must be not null");
         }
         regions = new TextureRegion[1];
         regions[0] = region;
+    }
+
+    public Sprite(TextureRegion region, int rows, int cols, int frames) {
+        regions = Ship.split(region,rows,cols,frames);
     }
 
     public void setHeightProportion(float height) {
