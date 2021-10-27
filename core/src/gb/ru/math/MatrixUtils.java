@@ -1,6 +1,5 @@
 package gb.ru.math;
 
-
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 

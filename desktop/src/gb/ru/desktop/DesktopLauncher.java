@@ -7,8 +7,8 @@ import gb.ru.GameStar;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.height = 800;
 		config.width = 500;
+		config.height = 700;
 		config.resizable = false;
 		new LwjglApplication(new GameStar(), config);
 	}
