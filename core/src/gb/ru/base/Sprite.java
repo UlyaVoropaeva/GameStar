@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import gb.ru.math.Rect;
+import gb.ru.util.Regions;
 
 public class Sprite extends Rect {
 
@@ -24,7 +25,7 @@ public class Sprite extends Rect {
     }
 
     public Sprite(TextureRegion region, int rows, int cols, int frames) {
-        regions = Ship.split(region,rows,cols,frames);
+        this.regions = Regions.split(region,rows,cols,frames);
     }
 
     public Sprite() {

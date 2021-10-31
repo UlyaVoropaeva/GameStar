@@ -1,24 +1,53 @@
 package gb.ru.base;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
-public class Ship {
+import gb.ru.math.Rect;
+import gb.ru.pool.BulletPool;
+import gb.ru.sprite.Bullet;
 
-    public static TextureRegion[] split(TextureRegion region, int rows, int cols, int frames) {
-        if (region == null) throw new RuntimeException("No texture region");
-        TextureRegion[] regions = new TextureRegion[frames];
-        int tileWidth = region.getRegionWidth() / cols;
-        int tileHeight = region.getRegionHeight() / rows;
-        int frame = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                regions[frame] = new TextureRegion(region, tileWidth * j, tileHeight * i, tileWidth, tileHeight);
-                if (frame == frames - 1) {
-                    return regions;
-                }
-                frame++;
-            }
-        }
-        return regions;
+public class Ship extends Sprite {
+
+    protected BulletPool bulletPool;
+    protected Sound bulletSound;
+    protected TextureRegion bulletRegion;
+    protected Vector2 bulletV;
+    protected Vector2 bulletPos;
+    protected float bulletHeight;
+    protected int damage;
+    protected int hp;
+
+    protected Vector2 v;
+    protected Vector2 v0;
+
+    protected float reloadTimer;
+    protected float reloadInterval;
+    protected Rect worldBounds;
+
+    public Ship() {
     }
+
+    public Ship(TextureRegion region, int rows, int cols, int frames) {
+        super(region, rows, cols, frames);
+    }
+
+    @Override
+    public void update(float delta) {
+        pos.mulAdd(v, delta);
+        reloadTimer += delta;
+        if (reloadTimer >= reloadInterval) {
+            reloadTimer = 0f;
+            shoot();
+        }
+        bulletPos.set(pos);
+    }
+
+    private void shoot() {
+        Bullet bullet = bulletPool.obtain();
+        bullet.set(this, bulletRegion, bulletPos, bulletV, worldBounds, bulletHeight, damage);
+        bulletSound.play();
+    }
+
 }
