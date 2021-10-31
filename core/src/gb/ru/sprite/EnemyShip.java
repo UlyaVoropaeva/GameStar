@@ -10,10 +10,11 @@ import gb.ru.pool.BulletPool;
 
 public class EnemyShip extends Ship {
 
-    public EnemyShip(BulletPool bulletPool, Rect worldBounds, Sound bulletSound) {
+    private static final Vector2 startV = new Vector2(0, -0.3f);
+
+    public EnemyShip(BulletPool bulletPool, Rect worldBounds) {
         this.bulletPool = bulletPool;
         this.worldBounds = worldBounds;
-        this.bulletSound = bulletSound;
         this.bulletV = new Vector2();
         this.bulletPos = new Vector2();
         this.v = new Vector2();
@@ -23,24 +24,28 @@ public class EnemyShip extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (getBottom() < worldBounds.getBottom()) {
-            destroy();
+        if (getTop() < worldBounds.getTop()) {
+            v.set(v0);
+        } else {
+            reloadTimer = 0.2f * reloadInterval;
         }
+        this.bulletPos.set(pos.x, pos.y - getHalfHeight());
     }
 
     public void set(
             TextureRegion[] regions,
-            Vector2 v,
+            Vector2 v0,
             TextureRegion bulletRegion,
             float bulletHeight,
             Vector2 bulletV,
             int damage,
             int hp,
             float reloadInterval,
-            float height
+            float height,
+            Sound bulletSound
     ) {
         this.regions = regions;
-        this.v.set(v);
+        this.v0.set(v0);
         this.bulletRegion = bulletRegion;
         this.bulletHeight = bulletHeight;
         this.bulletV.set(bulletV);
@@ -48,5 +53,13 @@ public class EnemyShip extends Ship {
         this.hp = hp;
         this.reloadInterval = reloadInterval;
         setHeightProportion(height);
+        this.bulletSound = bulletSound;
+        v.set(startV);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        reloadTimer = 0f;
     }
 }
