@@ -20,6 +20,6 @@ public class EnemyPool extends SpritesPool<EnemyShip> {
 
     @Override
     protected EnemyShip newObject() {
-        return new EnemyShip(bulletPool, worldBounds, bulletSound);
+        return new EnemyShip(bulletPool,worldBounds);
     }
 }
