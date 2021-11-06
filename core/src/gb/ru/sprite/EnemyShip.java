@@ -7,13 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 import gb.ru.base.Ship;
 import gb.ru.math.Rect;
 import gb.ru.pool.BulletPool;
+import gb.ru.pool.ExplosionPool;
 
 public class EnemyShip extends Ship {
 
     private static final Vector2 startV = new Vector2(0, -0.3f);
 
-    public EnemyShip(BulletPool bulletPool, Rect worldBounds) {
+    public EnemyShip(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds) {
         this.bulletPool = bulletPool;
+        this.explosionPool = explosionPool;
         this.worldBounds = worldBounds;
         this.bulletV = new Vector2();
         this.bulletPos = new Vector2();
@@ -24,12 +26,9 @@ public class EnemyShip extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (getTop() < worldBounds.getTop()) {
-            v.set(v0);
-        } else {
-            reloadTimer = 0.2f * reloadInterval;
+        if (getBottom() < worldBounds.getBottom()) {
+            destroy();
         }
-        this.bulletPos.set(pos.x, pos.y - getHalfHeight());
     }
 
     public void set(
@@ -57,9 +56,10 @@ public class EnemyShip extends Ship {
         v.set(startV);
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-        reloadTimer = 0f;
+    public boolean isBulletCollision(Bullet bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y);
     }
 }
