@@ -46,6 +46,7 @@ public abstract class SpritesPool<T extends Sprite> {
             if (object.isDestroyed()) {
                 free(object);
                 i--;
+                object.flushDestroy();
             }
         }
     }
@@ -66,4 +67,9 @@ public abstract class SpritesPool<T extends Sprite> {
             System.out.println(getClass().getSimpleName() + " active/free: " + activeObjects.size() + "/" + freeObjects.size());
         }
     }
+    public void freeAllActiveObjects() {
+        freeObjects.addAll(activeObjects);
+        activeObjects.clear();
+    }
+
 }
